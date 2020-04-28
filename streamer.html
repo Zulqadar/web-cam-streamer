@@ -35,16 +35,8 @@
             const canvas = document.createElement('canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-            var ctx=canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0);
-            ctx.canvas.toBlob((blob)=>{
-                const file=new File([blob],"a.png",{
-                    type:'image/png',
-                    lastModified:Date.now()
-                })
-                //console.log(blob.size)
-            },'image/png',1);
-            const data = ctx.canvas.toDataURL('image/png');
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const data = canvas.toDataURL('image/png');
             return data;
         } 
         const WS_URL = location.origin.replace(/^http/, 'ws');
