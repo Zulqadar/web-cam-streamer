@@ -36,7 +36,7 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
-            const data = canvas.toDataURL('image/png','0.1');
+            const data = canvas.toDataURL('image/webp','0.1');
             return data;
         } 
         const WS_URL = location.origin.replace(/^http/, 'ws');
