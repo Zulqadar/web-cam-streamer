@@ -40,7 +40,7 @@
             return data;
         } 
         const WS_URL = location.origin.replace(/^http/, 'ws');
-        const FPS = 6;
+        const FPS = 7;
         const ws = new WebSocket(WS_URL);
         ws.onopen = () => {
             console.log(`Connected to ${WS_URL}`);
