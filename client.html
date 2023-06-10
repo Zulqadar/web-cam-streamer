@@ -31,7 +31,14 @@
         ws.onopen = () => console.log(`Connected to ${WS_URL}`);
         ws.onmessage = message => {
             // set the base64 string to the src tag of the image
-            img.src = message.data;
+            if(message.data[0]=='d'){
+                img.src = message.data;
+            }else{
+                console.log(message.data)
+                var url=URL.createObjectURL(message.data);
+                var audio=new Audio(url);
+                audio.play();
+            }
         }
 
     </script>

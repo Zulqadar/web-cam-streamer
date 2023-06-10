@@ -12,6 +12,7 @@
                     <h5 class="card-title  float-left">Live Video Streaming</h5>
                 </div>
                 <video autoplay style="width: 100%;height: 80vh;"></video>
+                <audio autoplay ></audio>
             </div>
             <div class="card-footer text-center">
                 <a href="/logout" class="btn btn-danger btn-sm">End Streaming</a>
@@ -22,14 +23,14 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
+    
     <script>
         // get video dom element
         const video = document.querySelector('video');
+        const audio=document.querySelector('audio');
         
-        // request access to webcam
-        navigator.mediaDevices.getUserMedia({video: {width: 426, height: 240}}).then((stream) => video.srcObject = stream);
-        
+        let audioDataURL="";
+
         // returns a frame encoded in base64
         const getFrame = () => {
             const canvas = document.createElement('canvas');
@@ -42,12 +43,52 @@
         const WS_URL = location.origin.replace(/^http/, 'ws');
         const FPS = 7;
         const ws = new WebSocket(WS_URL);
+
+        // request access to webcam/microphone
+        var getAudioFrame=navigator.mediaDevices.getUserMedia({
+            video: {width: 426, height: 240},
+            audio:true
+        }).then((stream) => {
+            video.srcObject = stream;
+            
+            const mediaRecorder=new MediaRecorder(stream);
+            let audioChunks=[];
+
+            mediaRecorder.start();
+
+            mediaRecorder.addEventListener("dataavailable",event=>{
+                audioChunks.push(event.data);
+            });
+
+            mediaRecorder.addEventListener("stop",()=>{
+                const audioBlob=new Blob(audioChunks);
+                //const audioURL=URL.createObjectURL(audioBlob);
+                audioDataURL=audioBlob;
+                audioChunks=[];
+                // const audio=new Audio(audioURL);
+                // audio.play();
+            });
+
+            // setTimeout(()=>{
+            //     mediaRecorder.stop();
+            // },1000/FPS);
+            
+           return getAudioFrame=()=>{
+                mediaRecorder.stop();
+                mediaRecorder.start();
+                return audioDataURL;   
+            }
+        });
+
+        
         ws.onopen = () => {
             console.log(`Connected to ${WS_URL}`);
             setInterval(() => {
                 ws.send(getFrame());
+                ws.send(getAudioFrame());             
             }, 1000 / FPS);
         }
+
     </script>
 </body>
 </html>

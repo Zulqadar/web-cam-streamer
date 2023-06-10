@@ -23,6 +23,7 @@ wsServer.on('connection', (ws, req) => {
     // listen for messages from the streamer, the clients will not send anything so we don't need to filter
     ws.on('message', data => {
         // send the base64 encoded frame to each connected ws
+        console.log(data)
         connectedClients.forEach((ws, i) => {
             if (ws.readyState === ws.OPEN) { // check if it is still connected
                 ws.send(data); // send
@@ -99,4 +100,4 @@ app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname,'./index.html'));
 });
 
-httpServer.listen(PORT, () => console.log(`HTTP server listening at http://localhost:${PORT}`));
+httpServer.listen(PORT,'192.168.1.8', () => console.log(`HTTP server listening at http://localhost:${PORT}`));
