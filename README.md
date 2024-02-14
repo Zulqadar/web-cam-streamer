@@ -7,10 +7,7 @@ Web Cam Streamer  - A NodeJs-based Streaming Application
 - [Overview](#overview)
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Usage](#usage)
 - [Roadmap](#roadmap)
-- [Contribution](#contribution)
-- [License](#license)
 
 ## Overview
 
@@ -31,3 +28,10 @@ Include instructions for setting up and running the project locally. This might 
 git clone https://github.com/your-username/your-project.git
 cd your-project
 npm install
+
+## Roadmap
+
+- [x] Audio Streaming: Enable audio broadcasting alongside video.
+- [ ] Recording: Capture your streams for later playback.
+- [ ] Chat Integration: Facilitate interaction between the streamer and viewers.
+- [ ] Private Streaming: Offer options for password-protected streams.
