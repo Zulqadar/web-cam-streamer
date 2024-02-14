@@ -28,6 +28,7 @@ Include instructions for setting up and running the project locally. This might 
 git clone https://github.com/your-username/your-project.git
 cd your-project
 npm install
+```
 
 ## Roadmap
 
